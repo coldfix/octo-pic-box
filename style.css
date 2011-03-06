@@ -41,7 +41,12 @@ a:hover {
 }
 .filelist .file .size {
     text-align: right;
-    width: 6em;
+    width: 4.2em;
+    margin-right: 0.3em;
+}
+.filelist .file .unit {
+    text-align: left;
+    width: 2.2em;
     margin-right: 0.5em;
 }
 .filelist .file .name {

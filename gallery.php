@@ -27,6 +27,7 @@ foreach ($filelist['image'] as $file) {
 }
 ?>
 
+
 <h1>Upload</h1>
 <form action="upload.php" method="post" enctype="multipart/form-data">
 <table>

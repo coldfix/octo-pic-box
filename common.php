@@ -4,7 +4,7 @@ $root = '/data/development/httproot/download/';
 $files = $root."files/";
 $thumbs = $root."thumbs/";
 
-$thumb_width = 280;
+$thumb_width = 350;
 $thumb_height = 140;
 
 $page = array('css' => array('style.css'));
@@ -17,18 +17,27 @@ function logToFile($msg)
     fclose($fd);
 }
 
+function get_filesize_unit($dsize)
+{
+    if (strlen($dsize) >= 10)
+        return "GiB";
+    elseif (strlen($dsize) >= 7)
+        return "MiB";
+    else
+        return "KiB";
+}
+
 function get_filesize ($dsize)
 {
-    if (strlen($dsize) <= 9 && strlen($dsize) >= 7) {
-        $dsize = number_format($dsize / (1024 * 1024),2);
-        return "$dsize MiB";
-    } elseif (strlen($dsize) >= 10) {
-        $dsize = number_format($dsize / (1024 * 1024 * 1024),2);
-        return "$dsize GiB";
-    } else {
-        $dsize = number_format($dsize / 1024,2);
-        return "$dsize KiB";
-    }
+    $unit = get_filesize_unit($dsize);
+    if ($unit == "GiB")
+        return number_format($dsize / (1024 * 1024 * 1024), 2);
+    elseif ($unit == "MiB")
+        return number_format($dsize / (1024 * 1024), 2);
+    elseif ($unit == "KiB")
+        return number_format($dsize / 1024, 2);
+    elseif ($unit == "Byte")
+        return $dsize;
 }
 
 function is_public_file($file)
