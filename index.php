@@ -12,43 +12,44 @@ $filelist = list_files();
 <h1>Download</h1>
 
 <h2>Pictures</h2>
-<table class="filelist">
+<div class="filelist">
 <?php
-
 foreach ($filelist['image'] as $file) {
     print '
-<tr>
-  <td class="filesize">'.get_filesize(filesize($files.$file)).'</td>
-  <td class="filename">
+<div class="file">
+  <div class="size">'.get_filesize(filesize($files.$file)).'</div>
+  <div class="name">
     <a href="view.php?file='.htmlspecialchars($file).'">'.$file.'</a>
-  </td>
-</tr>';
+  </div>
+</div>';
 }
 ?>
-</table>
+</div>
+<div class="clear"></div>
 
 <h2>Other files</h2>
-<table class="filelist">
+<div class="filelist">
 <?php
 foreach ($filelist['normal'] as $file) {
     print '
-<tr>
-  <td class="filesize">'.get_filesize(filesize($files.$file)).'</td>
-  <td class="filename">
+<div class="file">
+  <div class="size">'.get_filesize(filesize($files.$file)).'</div>
+  <div class="name">
     <a href="download.php?file='.htmlspecialchars($file).'">'.$file.'</a>
-  </td>';
+  </div>
+</div>';
 }
 ?>
-</table>
+</div>
+<div class="clear"></div>
 
 <h1>Upload</h1>
 <form action="upload.php" method="post" enctype="multipart/form-data">
-<input type="hidden" name="referer" value="index.php">
 <table>
  <tr>
-  <td>File:</td>
-  <td><input type="file" name="file" size="40"></td>
-  <td><input type="submit"></td>
+  <td><input type="hidden" name="referer" value="index.php"/>File:</td>
+  <td><input type="file" name="file" size="40"/></td>
+  <td><input type="submit"/></td>
  </tr>
 </table>
 </form>
