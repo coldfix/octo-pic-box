@@ -7,6 +7,8 @@ $thumbs = $root."thumbs/";
 $thumb_width = 280;
 $thumb_height = 140;
 
+$page = array('css' => array('style.css'));
+
 
 function logToFile($msg)
 {
@@ -93,5 +95,36 @@ function update_thumb($filename)
     if (!file_exists($thumbs.$filename) || filemtime($files.$filename) > filemtime($thumbs.$filename))
         create_thumb($files.$filename, $thumbs.$filename, $thumb_width, $thumb_height);
 }
+
+
+function list_files()
+{
+    global $files;
+    $image_files = array();
+    $other_files = array();
+
+    $dir = opendir($files);
+    while ($file = readdir($dir)) {
+        if (!is_public_file($file))
+            continue;
+        if (is_image_file($file))
+            $image_files[] = $file;
+        else
+            $other_files[] = $file;
+    }
+
+    $compare = function($file_a, $file_b) use ($files) {
+        return filemtime($files.$file_a) - filemtime($files.$file_b); };
+    $sort = function($array) use ($compare) {
+        usort($array, $compare);
+        return $array; };
+
+    return array(
+        'all' => $sort(array_merge($image_files, $other_files)),
+        'image' => $sort($image_files),
+        'normal' => $sort($other_files)
+    );
+}
+
 
 ?>

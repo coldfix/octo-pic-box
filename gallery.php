@@ -1,15 +1,18 @@
-<a href="index.php">Go to Index</a></h2>
-<h2>Gallery</h2>
-
 <?php
 include('common.php');
+$page['title'] = 'Gallery';
+include('header.php');
 
 logToFile("gallery");
+$filelist = list_files();
+?>
 
-$dir = opendir($files);
-while ($file = readdir($dir)) {
-    if (!is_public_file($file) || !is_image_file($file))
-        continue;
+<a href="index.php">Go to Index</a></h2>
+
+<h1>Gallery</h1>
+
+<?php
+foreach ($filelist['image'] as $file) {
     update_thumb($file);
 
     $size = getimagesize($thumbs.$file);
@@ -22,10 +25,9 @@ while ($file = readdir($dir)) {
  </a>
 </div>';
 }
-
 ?>
 
-<h2>Upload</h2>
+<h1>Upload</h1>
 <form action="upload.php" method="post" enctype="multipart/form-data">
 <input type="hidden" name="referer" value="gallery.php">
 <table>
@@ -37,3 +39,6 @@ while ($file = readdir($dir)) {
 </table>
 </form>
 
+<?php
+include('footer.php');
+?>

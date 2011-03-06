@@ -1,0 +1,51 @@
+
+body
+{
+	/*--------------------------------------------------
+	* background-color: #777777;
+	* font-family: sans-serif;
+	*--------------------------------------------------*/
+}
+
+
+h1
+{
+	text-align: left;
+	font-weight: bold;
+    font-size: 1.5em;
+    margin: 1em 0em 0.4em;
+}
+
+h2
+{
+	text-align: left;
+	font-weight: bold;
+	font-size: 1em;
+
+	margin: 1em 0em 0.4em;
+	padding: 0em;
+}
+
+a
+{
+	text-decoration: none;
+	/*--------------------------------------------------
+	* color: white;
+	*--------------------------------------------------*/
+	font-weight: bold;
+}
+a:hover
+{
+	color: gray;
+}
+
+table
+{
+    border: none;
+}
+
+.filesize
+{
+    text-align: right;
+}
+
