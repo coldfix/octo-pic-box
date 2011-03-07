@@ -21,7 +21,8 @@ foreach ($filelist['image'] as $file) {
   <div class="size">'.get_filesize($size).'</div>
   <div class="unit">'.get_filesize_unit($size).'</div>
   <div class="name">
-    <a href="view.php?file='.htmlspecialchars($file).'">'.$file.'</a>
+    <a title="download image" href="download.php?file='.htmlspecialchars($file).'"><img src="save.png" width="16" height="16"/></a>
+    <a title="view image" href="view.php?file='.htmlspecialchars($file).'">'.$file.'</a>
   </div>
 </div>'."\n";
 }
@@ -39,7 +40,8 @@ foreach ($filelist['normal'] as $file) {
   <div class="size">'.get_filesize($size).'</div>
   <div class="unit">'.get_filesize_unit($size).'</div>
   <div class="name">
-    <a href="download.php?file='.htmlspecialchars($file).'">'.$file.'</a>
+    <a title="view file" href="view.php?file='.htmlspecialchars($file).'"><img src="view.png" width="16" height="16"/></a>
+    <a title="download file" href="download.php?file='.htmlspecialchars($file).'">'.$file.'</a>
   </div>
 </div>'."\n";
 }
