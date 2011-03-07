@@ -1,7 +1,7 @@
 <?php
-include('common.php');
+include('intern/common.php');
 $page['title'] = 'File index';
-include('header.php');
+include('intern/header.php');
 
 logToFile("index");
 $filelist = list_files();
@@ -21,8 +21,8 @@ foreach ($filelist['image'] as $file) {
   <div class="size">'.get_filesize($size).'</div>
   <div class="unit">'.get_filesize_unit($size).'</div>
   <div class="name">
-    <a title="download image" href="download.php?file='.htmlspecialchars($file).'"><img src="save.png" width="16" height="16"/></a>
-    <a title="view image" href="view.php?file='.htmlspecialchars($file).'">'.$file.'</a>
+    <a title="download image" href="file/'.htmlspecialchars($file).'"><img src="style/save.png" width="16" height="16"/></a>
+    <a title="view image" href="view/'.htmlspecialchars($file).'">'.$file.'</a>
   </div>
 </div>'."\n";
 }
@@ -40,8 +40,8 @@ foreach ($filelist['normal'] as $file) {
   <div class="size">'.get_filesize($size).'</div>
   <div class="unit">'.get_filesize_unit($size).'</div>
   <div class="name">
-    <a title="view file" href="view.php?file='.htmlspecialchars($file).'"><img src="view.png" width="16" height="16"/></a>
-    <a title="download file" href="download.php?file='.htmlspecialchars($file).'">'.$file.'</a>
+    <a title="view file" href="view/'.htmlspecialchars($file).'"><img src="style/view.png" width="16" height="16"/></a>
+    <a title="download file" href="download/'.htmlspecialchars($file).'">'.$file.'</a>
   </div>
 </div>'."\n";
 }
@@ -62,5 +62,5 @@ foreach ($filelist['normal'] as $file) {
 </form>
 
 <?php
-include('footer.php');
+include('intern/footer.php');
 ?>

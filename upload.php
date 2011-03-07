@@ -1,13 +1,16 @@
 <?php
-include('common.php');
+include('intern/common.php');
+$page['title'] = 'Upload';
+include('intern/header.php');
 
 $file = basename($_FILES['file']['name']);
+$path = $files.$file;
 
 if (!is_public_file($file)) {
     logToFile("upload denied: ".$file);
     echo "upload denied: ".$file;
 }
-else if (move_uploaded_file($_FILES['file']['tmp_name'], $files.$file) ) {
+else if (move_uploaded_file($_FILES['file']['tmp_name'], $path) ) {
     logToFile("upload: " . $file);
     echo "upload complete: ".$file;
 }
@@ -16,10 +19,8 @@ else {
     echo "upload failed: ".$file;
 }
 
-if (is_image_file($file))
-    update_thumb($file);
-
 echo '<br/>
     <a href="'.$_POST['referer'].'">Return now</a>';
 
+include('intern/footer.php');
 ?>

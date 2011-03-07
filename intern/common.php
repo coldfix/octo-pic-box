@@ -1,13 +1,13 @@
 <?php
 
-$root = '/data/development/httproot/download/';
+$root = '/var/www/public/';
 $files = $root."files/";
 $thumbs = $root."thumbs/";
 
 $thumb_width = 350;
 $thumb_height = 140;
 
-$page = array('css' => array('style.css'));
+$page = array('css' => array('style/style.css'));
 
 
 function logToFile($msg)
@@ -95,14 +95,6 @@ function create_thumb($image, $thumb, $thumb_width, $thumb_height)
 
 	imagedestroy($thumb_img);
 	imagedestroy($orig_img);
-}
-
-
-function update_thumb($filename)
-{
-    global $thumbs, $files, $thumb_width, $thumb_height;
-    if (!file_exists($thumbs.$filename) || filemtime($files.$filename) > filemtime($thumbs.$filename))
-        create_thumb($files.$filename, $thumbs.$filename, $thumb_width, $thumb_height);
 }
 
 

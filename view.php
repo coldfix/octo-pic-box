@@ -1,6 +1,13 @@
 <?php
 include('common.php');
 
+if (!isset($_GET['file']) || empty($_GET['file'])) {
+    print "<pre>";
+    print_r($_SERVER);
+    print "</pre>";
+    die ('No file requested.');
+}
+
 $file = basename($_GET['file']);
 $path = $files.$file;
 

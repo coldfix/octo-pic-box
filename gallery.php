@@ -1,7 +1,7 @@
 <?php
-include('common.php');
+include('intern/common.php');
 $page['title'] = 'Gallery';
-include('header.php');
+include('intern/header.php');
 
 logToFile("gallery");
 $filelist = list_files();
@@ -13,15 +13,13 @@ $filelist = list_files();
 
 <?php
 foreach ($filelist['image'] as $file) {
-    update_thumb($file);
-
     $size = getimagesize($thumbs.$file);
     $w = $size[0];
     $h = $size[1];
     print '
 <div style="display: inline-block; margin: 4px; border: 1px solid grey; text-align: center; width: '.$w.'px; height: '.$h.'px;">
- <a href="view.php?file='.htmlspecialchars($file).'">
-  <img width="'.$w.'" height="'.$h.'" src="thumbs/'.htmlspecialchars($file).'" alt="'.htmlspecialchars($file).'"/>
+ <a href="view/'.htmlspecialchars($file).'">
+  <img width="'.$w.'" height="'.$h.'" src="thumb/'.htmlspecialchars($file).'" alt="'.htmlspecialchars($file).'"/>
  </a>
 </div>';
 }
@@ -40,5 +38,5 @@ foreach ($filelist['image'] as $file) {
 </form>
 
 <?php
-include('footer.php');
+include('intern/footer.php');
 ?>
