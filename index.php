@@ -41,7 +41,7 @@ foreach ($filelist['normal'] as $file) {
   <div class="unit">'.get_filesize_unit($size).'</div>
   <div class="name">
     <a title="view file" href="view/'.htmlspecialchars($file).'"><img src="style/view.png" width="16" height="16"/></a>
-    <a title="download file" href="download/'.htmlspecialchars($file).'">'.$file.'</a>
+    <a title="download file" href="file/'.htmlspecialchars($file).'">'.$file.'</a>
   </div>
 </div>'."\n";
 }

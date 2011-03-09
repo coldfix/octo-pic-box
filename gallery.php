@@ -13,9 +13,7 @@ $filelist = list_files();
 
 <?php
 foreach ($filelist['image'] as $file) {
-    $size = getimagesize($thumbs.$file);
-    $w = $size[0];
-    $h = $size[1];
+    list($w, $h) = array_values(thumb_size($file));
     print '
 <div style="display: inline-block; margin: 4px; border: 1px solid grey; text-align: center; width: '.$w.'px; height: '.$h.'px;">
  <a href="view/'.htmlspecialchars($file).'">

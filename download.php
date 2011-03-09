@@ -1,9 +1,8 @@
 <?php
 include('intern/common.php');
 
-if (!isset($_GET['file']) || empty($_GET['file'])) {
-    die ('No file requested.');
-}
+if (!isset($_GET['file']) || empty($_GET['file']))
+    fatal_error('download.php: empty request', 'No file requested.');
 
 $serve_thumb = isset($_GET['thumb']) && $_GET['thumb'];
 $serve_inline = isset($_GET['inline']) && $_GET['inline'];
@@ -15,24 +14,19 @@ $thumb = $thumbs.$file;
 $send = $serve_thumb ? $thumb : $path;
 
 
-if (!is_public_file($file) || !file_exists($path)
-    || ($serve_thumb && !is_image_file($file) ))
-{
-    logToFile("denied $serve_action: " . $file);
-    die("Access to '$file' not allowed.");
-}
+if (!is_public_file($file) || ($serve_thumb && !is_image_file($file)))
+    fatal_error("denied $serve_action: ".$file, "Access to '$file' not allowed.");
 logToFile("$serve_action: " . $file);
 
 if ($serve_thumb && (!file_exists($thumb) || filemtime($path) > filemtime($thumb)))
     create_thumb($path, $thumb, $thumb_width, $thumb_height);
 
+$finfo = new finfo(FILEINFO_MIME)
+    or fatal_error("failed $serve_action: ".$file, "Opening fileinfo database failed");
 
-$finfo = new FInfo(FILEINFO_MIME)
-    or die("Opening fileinfo database failed");
-
-// HttpResponse::setGzip(true);
+HttpResponse::setGzip(true);
 HttpResponse::setContentDisposition($file, $serve_inline);
-// HttpResponse::guessContentType($send);
+// HttpResponse::guessContentType($send); // needs libmagick
 HttpResponse::setContentType($finfo->file($send));
 
 HttpResponse::setFile($send); // auto calculates ETag and LastModified

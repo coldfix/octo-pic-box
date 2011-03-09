@@ -6,7 +6,7 @@ include('intern/header.php');
 $file = basename($_FILES['file']['name']);
 $path = $files.$file;
 
-if (!is_public_file($file)) {
+if (!is_public_name($file) && !file_exists($path)) {
     logToFile("upload denied: ".$file);
     echo "upload denied: ".$file;
 }
