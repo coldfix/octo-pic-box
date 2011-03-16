@@ -1,5 +1,5 @@
 <?php
-$root = '/var/www/public/';
+$root = '/var/www/root/';
 $files = $root."files/";
 $thumbs = $root."thumbs/";
 
@@ -18,7 +18,7 @@ function logToFile($msg)
     if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')
         return;
 
-    $fd = fopen(".log", "a");
+    $fd = fopen($root."access.log", "a");
     fwrite($fd, "[" . date("Y/m/d h:i:s", mktime()) . "] <". $_SERVER['REMOTE_ADDR']."> (".$_SERVER['REMOTE_HOST'].") ". $msg . "\n");
     fclose($fd);
 }
@@ -29,6 +29,11 @@ function fatal_error($log, $user)
     die ($user);
 }
 
+function error404()
+{
+    require('error404.php');
+    exit();
+}
 
 //--------------------------------------------------
 // file functions

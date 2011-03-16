@@ -1,8 +1,9 @@
 <?php
-include('intern/common.php');
+$intern = "../intern";
+require_once("$intern/common.php");
 
 if (!isset($_GET['file']) || empty($_GET['file']))
-    fatal_error('download.php: empty request', 'No file requested.');
+    error404();
 
 $serve_thumb = isset($_GET['thumb']) && $_GET['thumb'];
 $serve_inline = isset($_GET['inline']) && $_GET['inline'];
@@ -15,7 +16,7 @@ $send = $serve_thumb ? $thumb : $path;
 
 
 if (!is_public_file($file) || ($serve_thumb && !is_image_file($file)))
-    fatal_error("denied $serve_action: ".$file, "Access to '$file' not allowed.");
+    error404();
 logToFile("$serve_action: " . $file);
 
 if ($serve_thumb && (!file_exists($thumb) || filemtime($path) > filemtime($thumb)))

@@ -1,7 +1,8 @@
 <?php
-include('intern/common.php');
+$intern = "../intern";
+require_once("$intern/common.php");
 $page['title'] = 'Upload';
-include('intern/header.php');
+include("$intern/header.php");
 
 $file = basename($_FILES['file']['name']);
 $path = $files.$file;
@@ -22,5 +23,5 @@ else {
 echo '<br/>
     <a href="'.$_POST['referer'].'">Return now</a>';
 
-include('intern/footer.php');
+include("$intern/footer.php");
 ?>

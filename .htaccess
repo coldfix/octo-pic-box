@@ -1,9 +1,0 @@
-Allow from All
-
-Options -MultiViews
-
-RewriteEngine On
-RewriteRule ^file/(.*)$ download.php?inline=0&file=$1 [T=application/x-httpd-php]
-RewriteRule ^view/(.*)$ download.php?inline=1&file=$1 [T=application/x-httpd-php]
-RewriteRule ^thumb/(.*)$ download.php?inline=1&thumb=1&file=$1 [T=application/x-httpd-php]
-

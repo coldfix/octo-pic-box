@@ -1,13 +1,14 @@
 <?php
-include('intern/common.php');
+$intern = "../intern";
+require_once("$intern/common.php");
 $page['title'] = 'Gallery';
-include('intern/header.php');
+require("$intern/header.php");
 
 logToFile("gallery");
 $filelist = list_files();
 ?>
 
-<a href="index.php">Go to Index</a>
+<a href="./">Go to Index</a>
 
 <h1>Gallery</h1>
 
@@ -25,10 +26,10 @@ foreach ($filelist['image'] as $file) {
 
 
 <h1>Upload</h1>
-<form action="upload.php" method="post" enctype="multipart/form-data">
+<form action="upload" method="post" enctype="multipart/form-data">
 <table>
  <tr>
-  <td><input type="hidden" name="referer" value="gallery.php"/>File:</td>
+  <td><input type="hidden" name="referer" value="gallery"/>File:</td>
   <td><input type="file" name="file" size="40"/></td>
   <td><input type="submit"/></td>
  </tr>
@@ -36,5 +37,5 @@ foreach ($filelist['image'] as $file) {
 </form>
 
 <?php
-include('intern/footer.php');
+require("$intern/footer.php");
 ?>

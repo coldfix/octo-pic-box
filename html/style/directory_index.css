@@ -1,0 +1,29 @@
+
+body
+{
+}
+
+a
+{
+    text-decoration: none;
+}
+
+tr
+{
+    white-space: pre;
+}
+
+
+tr:hover, tr:hover a
+{
+	background-color : #aaeeaa;
+    color: black;
+    white-space: pre;
+}
+
+tr:hover a:hover
+{
+    color: gray;
+    text-decoration: underline;
+}
+
