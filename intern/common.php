@@ -1,12 +1,21 @@
 <?php
-$root = '/var/www/root/';
-$files = $root."files/";
-$thumbs = $root."thumbs/";
-
 $thumb_width = 450;
 $thumb_height = 150;
 
 $page = array('css' => array('style/style.css'));
+
+
+if (!isset($directory))
+    $directory = isset($_GET['dir']) ? $_GET['dir'].'/' : '';
+
+if ($directory !== '' && !is_public_folder($directory))
+{
+    // show 404 ?
+    $directory = '';
+}
+
+$files .= $directory;
+$thumbs .= $directory;
 
 
 //--------------------------------------------------
@@ -15,10 +24,11 @@ $page = array('css' => array('style/style.css'));
 
 function logToFile($msg)
 {
+    global $root;
     if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')
         return;
 
-    $fd = fopen($root."access.log", "a");
+    $fd = fopen("$root/access.log", "a");
     fwrite($fd, "[" . date("Y/m/d h:i:s", mktime()) . "] <". $_SERVER['REMOTE_ADDR']."> (".$_SERVER['REMOTE_HOST'].") ". $msg . "\n");
     fclose($fd);
 }
@@ -38,6 +48,39 @@ function error404()
 //--------------------------------------------------
 // file functions
 //--------------------------------------------------
+
+function is_public_dirname($file)
+{
+    return $file === ''
+        || (strpos('.\\/', $file[0]) === false
+        && strpos($file, '/.') === false);
+}
+
+function is_public_name($file)
+{
+    return $file !== ''
+        && is_public_dirname($file);
+        // && strcspn($file, "/\\") == strlen($file)
+        // && $file[0] != '.';
+}
+
+function is_public_file($file, $path = '')
+{
+    global $files;
+    return 1 //is_public_dirname($path)
+        && is_public_name(basename($file))
+        && is_readable($files.$path.$file)
+        && (is_file($files.$path.$file) || is_dir($files.$path.$file));
+}
+
+function is_public_folder($file)
+{
+    global $files;
+    return is_public_dirname($file)
+        && is_readable($files.$file)
+        && is_dir($files.$file);
+}
+
 
 function get_filesize_unit($dsize)
 {
@@ -63,18 +106,6 @@ function get_filesize ($dsize, $unit = "")
         return $dsize;
 }
 
-function is_public_name($file)
-{
-    return $file !== ""
-        && strcspn($file, "/\\") == strlen($file)
-        && $file[0] != '.';
-}
-
-function is_public_file($file)
-{
-    global $files;
-    return is_public_name($file) && is_readable($files.$file) && is_file($files.$file);
-}
 
 function file_extension($filename)
 {
@@ -132,6 +163,8 @@ function create_thumb($image, $thumb, $thumb_width, $thumb_height)
         $thumb_width, $thumb_height, $orig_width, $orig_height);
 
     // save thumbnail into a file
+    if (!is_dir(dirname($thumb)))
+        mkdir(dirname($thumb));
 	if ($ext == 'png')
 		imagepng($thumb_img, $thumb);
 	else
@@ -141,10 +174,24 @@ function create_thumb($image, $thumb, $thumb_width, $thumb_height)
 	imagedestroy($orig_img);
 }
 
+function count_items($folder)
+{
+    global $files;
+
+    $count = 0;
+    $dir = opendir($files.$folder);
+    while ($file = readdir($dir)) {
+        if (is_public_file($file, $folder.'/'))
+            $count = $count + 1;
+    }
+    return $count;
+}
+
 
 function list_files()
 {
     global $files;
+    $directories = array();
     $image_files = array();
     $other_files = array();
 
@@ -152,7 +199,9 @@ function list_files()
     while ($file = readdir($dir)) {
         if (!is_public_file($file))
             continue;
-        if (is_image_file($file))
+        if (is_dir($files.$file))
+            $directories[] = $file;
+        else if (is_image_file($file))
             $image_files[] = $file;
         else
             $other_files[] = $file;
@@ -165,7 +214,8 @@ function list_files()
         return $array; };
 
     return array(
-        'all' => $sort(array_merge($image_files, $other_files)),
+        'file' => $sort(array_merge($image_files, $other_files)),
+        'folder' => $sort($directories),
         'image' => $sort($image_files),
         'normal' => $sort($other_files)
     );

@@ -1,7 +1,14 @@
 <?php
-$intern = "../intern";
+require_once("intern.php");
 require_once("$intern/common.php");
-$page['title'] = 'Gallery';
+
+if (empty($directory)) {
+    $page['title'] = 'Gallery: ' . htmlspecialchars($directory);
+    $page['heading'] = 'Gallery: '. htmlspecialchars($directory);
+} else {
+    $page['title'] = 'Gallery';
+    $page['heading'] = 'Gallery';
+}
 require("$intern/header.php");
 
 logToFile("gallery");
@@ -10,19 +17,41 @@ $filelist = list_files();
 
 <a href="./">Go to Index</a>
 
-<h1>Gallery</h1>
+<h1><?= $page['heading'] ?></h1>
 
 <?php
 foreach ($filelist['image'] as $file) {
     list($w, $h) = array_values(thumb_size($file));
     print '
 <div style="display: inline-block; margin: 4px; border: 1px solid grey; text-align: center; width: '.$w.'px; height: '.$h.'px;">
- <a href="view/'.htmlspecialchars($file).'">
-  <img width="'.$w.'" height="'.$h.'" src="thumb/'.htmlspecialchars($file).'" alt="'.htmlspecialchars($file).'"/>
+ <a href="'.htmlspecialchars($file).'/view">
+  <img width="'.$w.'" height="'.$h.'" src="'.htmlspecialchars($file).'/thumb" alt="'.htmlspecialchars($file).'"/>
  </a>
 </div>';
 }
 ?>
+
+
+<h2>Subfolders</h2>
+<div class="filelist">
+<?php
+if (!empty($directory))
+    $filelist['folder'][] = '..';
+foreach ($filelist['folder'] as $file) {
+    $size = count_items($file);
+    print
+'<div class="file">
+  <div class="size">'.$size.'</div>
+  <div class="unit">Items</div>
+  <div class="name">
+    <a title="browse folder" href="'.htmlspecialchars($file).'/gallery"><img src="style/folder.png" width="16" height="16"/></a>
+    <a title="browse folder" href="'.htmlspecialchars($file).'/gallery">'.$file.'</a>
+  </div>
+</div>'."\n";
+}
+?>
+</div>
+<div class="clear"></div>
 
 
 <h1>Upload</h1>

@@ -1,5 +1,5 @@
 <?php
-$intern = "../intern";
+require_once("intern.php");
 require_once("$intern/common.php");
 
 if (!isset($_GET['file']) || empty($_GET['file']))
@@ -22,7 +22,7 @@ logToFile("$serve_action: " . $file);
 if ($serve_thumb && (!file_exists($thumb) || filemtime($path) > filemtime($thumb)))
     create_thumb($path, $thumb, $thumb_width, $thumb_height);
 
-$finfo = new finfo(FILEINFO_MIME)
+$finfo = new FInfo(FILEINFO_MIME)
     or fatal_error("failed $serve_action: ".$file, "Opening fileinfo database failed");
 
 HttpResponse::setGzip(true);
