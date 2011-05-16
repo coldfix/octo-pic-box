@@ -221,5 +221,35 @@ function list_files()
     );
 }
 
+/*
+ * enumerations
+ */
+
+
+function print_filelist($files, $fmtsize, $fmtunit, $mklink)
+{
+    print '
+<h2>Subfolders</h2>
+<div class="filelist">';
+    if (!empty($directory))
+        $filelist['folder'][] = '..';
+    foreach ($filelist['folder'] as $file) {
+        $size = count_items($file);
+        print
+'<div class="file">
+  <div class="size">'.$size.'</div>
+  <div class="unit">Items</div>
+  <div class="name">
+    <a title="browse folder" href="'.htmlspecialchars($file).'/gallery"><img src="style/folder.png" width="16" height="16"/></a>
+    <a title="browse folder" href="'.htmlspecialchars($file).'/gallery">'.$file.'</a>
+  </div>
+</div>'."\n";
+    }
+    print '
+</div>
+<div class="clear"></div>';
+}
+
+
 
 ?>
