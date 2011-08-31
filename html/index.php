@@ -1,16 +1,16 @@
 <?php
 require_once("intern.php");
 
-if (empty($directory)) {
-    $page['title'] = 'File index: ' . htmlspecialchars($directory);
-    $page['heading'] = 'Download: '. htmlspecialchars($directory);
-} else {
+if (empty($dirname)) {
     $page['title'] = 'File index';
     $page['heading'] = 'Download';
+} else {
+    $page['title'] = 'File index: ' . htmlspecialchars($dirname);
+    $page['heading'] = 'Download: '. htmlspecialchars($dirname);
 }
 require("$intern/header.php");
 
-logToFile("index");
+logToFile("index /$dirname");
 $filelist = list_files();
 ?>
 
@@ -62,7 +62,7 @@ foreach ($filelist['normal'] as $file) {
 <h2>Subfolders</h2>
 <div class="filelist">
 <?php
-if (!empty($directory))
+if (!empty($dirname))
     $filelist['folder'][] = '..';
 foreach ($filelist['folder'] as $file) {
     $size = count_items($file);
@@ -81,11 +81,15 @@ foreach ($filelist['folder'] as $file) {
 <div class="clear"></div>
 
 
+<?php
+if (is_writeable(rtrim($files,'/'))) {
+?>
+
 <h1>Upload</h1>
 <form action="<?= content('.','upload') ?>" method="post" enctype="multipart/form-data">
 <table>
  <tr>
-  <td><input type="hidden" name="referer" value="./"/>File:</td>
+  <td><input type="hidden" name="referer" value="<?= content('.', 'index') ?>"/>File:</td>
   <td><input type="file" name="file" size="40"/></td>
   <td><input type="submit"/></td>
  </tr>
@@ -93,5 +97,18 @@ foreach ($filelist['folder'] as $file) {
 </form>
 
 <?php
+}
+else
+{
+?>
+
+<div class="gray">
+<h1>Upload</h1>
+Write protected directory.
+</div>
+
+<?php
+}
+
 require("$intern/footer.php");
 ?>

@@ -1,22 +1,21 @@
 <?php
 require_once("intern.php");
 
-if (!isset($_GET['file']) || empty($_GET['file']))
+if (empty($filename))
     error404();
 
 $serve_thumb = isset($_GET['thumb']) && $_GET['thumb'];
 $serve_inline = isset($_GET['inline']) && $_GET['inline'];
 $serve_action = $serve_thumb ? 'thumb' : ($serve_inline ? 'view' : 'download');
 
-$file = basename($_GET['file']);
-$path = $files.$file;
-$thumb = $thumbs.$file;
+$path = $files.$filename;
+$thumb = $thumbs.$filename;
 $send = $serve_thumb ? $thumb : $path;
 
 
-if (!is_public_file($file) || ($serve_thumb && !is_image_file($file)))
+if ($serve_thumb && !is_image_file($filename))
     error404();
-logToFile("$serve_action: " . $file);
+logToFile("$serve_action /$filename");
 
 if ($serve_thumb && (!file_exists($thumb) || filemtime($path) > filemtime($thumb)))
     create_thumb($path, $thumb, $thumb_width, $thumb_height);
@@ -27,10 +26,10 @@ if (is_dir($path)) {
 }
 
 $finfo = new FInfo(FILEINFO_MIME)
-    or fatal_error("failed $serve_action: ".$file, "Opening fileinfo database failed");
+    or fatal_error("failed $serve_action: ".$filename, "Opening fileinfo database failed");
 
 HttpResponse::setGzip(true);
-HttpResponse::setContentDisposition($file, $serve_inline);
+HttpResponse::setContentDisposition($filename, $serve_inline);
 // HttpResponse::guessContentType($send); // needs libmagick
 HttpResponse::setContentType($finfo->file($send));
 

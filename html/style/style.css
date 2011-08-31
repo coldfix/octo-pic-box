@@ -12,6 +12,7 @@ h1 {
     margin: 1em 0em 0.4em;
 }
 
+
 h2 {
 	text-align: left;
 	font-weight: bold;
@@ -29,6 +30,20 @@ a:hover {
 	color: pink;
 }
 
+.gray {
+    color: gray;
+}
+
+.imagebox {
+    display: inline-block;
+    margin: 4px;
+    border: 1px dashed gray;
+    text-align: center;
+}
+.imagebox:hover {
+    border: 1px solid red;
+}
+
 .filelist .file:nth-child(2n+2) div {
     background-color: #f5f5f5;
 }
@@ -41,12 +56,12 @@ a:hover {
 }
 .filelist .file .size {
     text-align: right;
-    width: 4.2em;
+    width: 5em;
     margin-right: 0.3em;
 }
 .filelist .file .unit {
     text-align: left;
-    width: 3.2em;
+    width: 3.0em;
     margin-right: 0.5em;
 }
 .filelist .file .name {

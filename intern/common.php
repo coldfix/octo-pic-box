@@ -5,20 +5,29 @@ $thumb_height = 150;
 $page = array('css' => array('style/style.css'));
 
 
-if (!isset($directory))
-    $directory = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
-    // $directory = isset($_GET['dir']) ? $_GET['dir'].'/' : '';
+$base_address = dirname($_SERVER['SCRIPT_NAME']);
 
-$directory = trim($directory, "/");
+if (!isset($dirname))
+    $dirname = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
+    // $dirname = isset($_GET['dir']) ? $_GET['dir'].'/' : '';
 
-if ($directory !== '' && !is_public_folder($directory))
-{
-    // show 404 ?
-    $directory = '';
+
+$dirname = trim($dirname, "./");
+if ($dirname !== '') {
+    if (is_public_folder($dirname))
+        $filename = '';
+    else if (is_public_file($dirname)) {
+        $filename = basename($dirname);
+        $dirname = dirname($dirname);
+    }
+    else
+        error404();
 }
 
-$files .= "$directory/";
-$thumbs .= "$directory/";
+if ($dirname !== '') {
+    $files .= "$dirname/";
+    $thumbs .= "$dirname/";
+}
 
 
 
@@ -28,13 +37,13 @@ $thumbs .= "$directory/";
 
 function logToFile($msg)
 {
-    global $root;
+    global $root, $intern;
     if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')
         return;
     $remote_host = isset($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_ADDR'] : "";
     $date = date("Y/m/d h:i:s", mktime());
     $remote_addr = $_SERVER['REMOTE_ADDR'];
-    $logstr = sprintf("[%s] <%s> (%s) %s", $date, $remote_addr, $remote_host, $msg);
+    $logstr = sprintf("[%s] <%s> (%s) %s\n", $date, $remote_addr, $remote_host, $msg);
     file_put_contents("$intern/access.log", $logstr, FILE_APPEND);
 }
 
@@ -228,19 +237,23 @@ function list_files()
 
 
 
-
 function uri($relative)
 {
-    return htmlspecialchars(dirname($_SERVER['SCRIPT_NAME']).'/'.$relative);
+    global $base_address;
+    return htmlspecialchars($base_address.'/'.$relative);
 }
 
 function content($file, $action)
 {
-    global $directory;
+    global $dirname;
     if ($file == '..')
-        return uri(implode('/',array($action,dirname($directory))));
+        return uri(implode('/',array($action,dirname($dirname))));
+    else if ($file == '.')
+        return uri(implode('/', array($action,$dirname)));
+    else if ($dirname == '')
+        return uri(implode('/', array($action,$file)));
     else
-        return uri(implode('/', array($action,$directory,$file)));
+        return uri(implode('/', array($action,$dirname,$file)));
 }
 
 
@@ -251,10 +264,11 @@ function content($file, $action)
 
 function print_filelist($files, $fmtsize, $fmtunit, $mklink)
 {
+    global $dirname;
     print '
 <h2>Subfolders</h2>
 <div class="filelist">';
-    if (!empty($directory))
+    if (!empty($dirname))
         $filelist['folder'][] = '..';
     foreach ($filelist['folder'] as $file) {
         $size = count_items($file);

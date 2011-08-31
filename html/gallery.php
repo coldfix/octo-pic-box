@@ -1,16 +1,16 @@
 <?php
 require_once("intern.php");
 
-if (empty($directory)) {
-    $page['title'] = 'Gallery: ' . htmlspecialchars($directory);
-    $page['heading'] = 'Gallery: '. htmlspecialchars($directory);
-} else {
+if (empty($dirname)) {
     $page['title'] = 'Gallery';
     $page['heading'] = 'Gallery';
+} else {
+    $page['title'] = 'Gallery: ' . htmlspecialchars($dirname);
+    $page['heading'] = 'Gallery: '. htmlspecialchars($dirname);
 }
 require("$intern/header.php");
 
-logToFile("gallery");
+logToFile("gallery /$dirname");
 $filelist = list_files();
 ?>
 
@@ -22,7 +22,7 @@ $filelist = list_files();
 foreach ($filelist['image'] as $file) {
     list($w, $h) = array_values(thumb_size($file));
     print '
-<div style="display: inline-block; margin: 4px; border: 1px solid grey; text-align: center; width: '.$w.'px; height: '.$h.'px;">
+<div class="imagebox" style="width: '.$w.'px; height: '.$h.'px;">
  <a href="'.content($file,'view').'">
   <img width="'.$w.'" height="'.$h.'" src="'.content($file,'thumb').'" alt="'.htmlspecialchars($file).'"/>
  </a>
@@ -34,7 +34,7 @@ foreach ($filelist['image'] as $file) {
 <h2>Subfolders</h2>
 <div class="filelist">
 <?php
-if (!empty($directory))
+if (!empty($dirname))
     $filelist['folder'][] = '..';
 foreach ($filelist['folder'] as $file) {
     $size = count_items($file);
@@ -57,7 +57,7 @@ foreach ($filelist['folder'] as $file) {
 <form action="<?= content('.','upload') ?>" method="post" enctype="multipart/form-data">
 <table>
  <tr>
-  <td><input type="hidden" name="referer" value="gallery"/>File:</td>
+  <td><input type="hidden" name="referer" value="<?= content('.', 'gallery') ?>"/>File:</td>
   <td><input type="file" name="file" size="40"/></td>
   <td><input type="submit"/></td>
  </tr>
