@@ -6,10 +6,11 @@
  <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
 <?php
 foreach ($page["css"] as $css)
-	echo ' <link rel="stylesheet" href="'.$css.'" type="text/css" />';
-?>
+	echo ' <link rel="stylesheet" href="'.uri($css).'" type="text/css" />';
 
- <link rel="shortcut icon" href="favicon.ico" />
+echo '
+ <link rel="shortcut icon" href="'.uri('favicon.ico').'" />'
+?>
 </head>
 <body>
 <div id="surface">

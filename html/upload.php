@@ -1,6 +1,5 @@
 <?php
 require_once("intern.php");
-require_once("$intern/common.php");
 $page['title'] = 'Upload';
 include("$intern/header.php");
 

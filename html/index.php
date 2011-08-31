@@ -1,6 +1,5 @@
 <?php
 require_once("intern.php");
-require_once("$intern/common.php");
 
 if (empty($directory)) {
     $page['title'] = 'File index: ' . htmlspecialchars($directory);
@@ -15,7 +14,7 @@ logToFile("index");
 $filelist = list_files();
 ?>
 
-<a href="gallery">Go to Gallery</a>
+<a href="<?= content('.','gallery') ?>">Go to Gallery</a>
 
 <h1><?= $page['heading'] ?></h1>
 
@@ -30,8 +29,8 @@ foreach ($filelist['image'] as $file) {
   <div class="size">'.get_filesize($size).'</div>
   <div class="unit">'.get_filesize_unit($size).'</div>
   <div class="name">
-    <a title="download image" href="'.htmlspecialchars($file).'/file"><img src="style/save.png" width="16" height="16"/></a>
-    <a title="view image" href="'.htmlspecialchars($file).'/view">'.$file.'</a>
+    <a title="download image" href="'.content($file,'download').'"><img src="'.uri('style/save.png').'" width="16" height="16"/></a>
+    <a title="view image" href="'.content($file,'view').'">'.$file.'</a>
   </div>
 </div>'."\n";
 }
@@ -50,8 +49,8 @@ foreach ($filelist['normal'] as $file) {
   <div class="size">'.get_filesize($size).'</div>
   <div class="unit">'.get_filesize_unit($size).'</div>
   <div class="name">
-    <a title="view file" href="'.htmlspecialchars($file).'/view"><img src="style/view.png" width="16" height="16"/></a>
-    <a title="download file" href="'.htmlspecialchars($file).'/file">'.$file.'</a>
+    <a title="view file" href="'.content($file,'view').'"><img src="'.uri('style/view.png').'" width="16" height="16"/></a>
+    <a title="download file" href="'.content($file,'download').'">'.$file.'</a>
   </div>
 </div>'."\n";
 }
@@ -72,8 +71,8 @@ foreach ($filelist['folder'] as $file) {
   <div class="size">'.$size.'</div>
   <div class="unit">Items</div>
   <div class="name">
-    <a title="browse folder" href="'.htmlspecialchars($file).'/"><img src="style/folder.png" width="16" height="16"/></a>
-    <a title="browse folder" href="'.htmlspecialchars($file).'/">'.$file.'</a>
+    <a title="browse folder" href="'.content($file,'index').'"><img src="'.uri('style/folder.png').'" width="16" height="16"/></a>
+    <a title="browse folder" href="'.content($file,'index').'">'.$file.'</a>
   </div>
 </div>'."\n";
 }
@@ -83,7 +82,7 @@ foreach ($filelist['folder'] as $file) {
 
 
 <h1>Upload</h1>
-<form action="upload" method="post" enctype="multipart/form-data">
+<form action="<?= content('.','upload') ?>" method="post" enctype="multipart/form-data">
 <table>
  <tr>
   <td><input type="hidden" name="referer" value="./"/>File:</td>

@@ -6,7 +6,10 @@ $page = array('css' => array('style/style.css'));
 
 
 if (!isset($directory))
-    $directory = isset($_GET['dir']) ? $_GET['dir'].'/' : '';
+    $directory = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
+    // $directory = isset($_GET['dir']) ? $_GET['dir'].'/' : '';
+
+$directory = trim($directory, "/");
 
 if ($directory !== '' && !is_public_folder($directory))
 {
@@ -14,8 +17,9 @@ if ($directory !== '' && !is_public_folder($directory))
     $directory = '';
 }
 
-$files .= $directory;
-$thumbs .= $directory;
+$files .= "$directory/";
+$thumbs .= "$directory/";
+
 
 
 //--------------------------------------------------
@@ -27,10 +31,11 @@ function logToFile($msg)
     global $root;
     if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')
         return;
-
-    $fd = fopen("$root/access.log", "a");
-    fwrite($fd, "[" . date("Y/m/d h:i:s", mktime()) . "] <". $_SERVER['REMOTE_ADDR']."> (".$_SERVER['REMOTE_HOST'].") ". $msg . "\n");
-    fclose($fd);
+    $remote_host = isset($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_ADDR'] : "";
+    $date = date("Y/m/d h:i:s", mktime());
+    $remote_addr = $_SERVER['REMOTE_ADDR'];
+    $logstr = sprintf("[%s] <%s> (%s) %s", $date, $remote_addr, $remote_host, $msg);
+    file_put_contents("$intern/access.log", $logstr, FILE_APPEND);
 }
 
 function fatal_error($log, $user)
@@ -220,6 +225,24 @@ function list_files()
         'normal' => $sort($other_files)
     );
 }
+
+
+
+
+function uri($relative)
+{
+    return htmlspecialchars(dirname($_SERVER['SCRIPT_NAME']).'/'.$relative);
+}
+
+function content($file, $action)
+{
+    global $directory;
+    if ($file == '..')
+        return uri(implode('/',array($action,dirname($directory))));
+    else
+        return uri(implode('/', array($action,$directory,$file)));
+}
+
 
 /*
  * enumerations

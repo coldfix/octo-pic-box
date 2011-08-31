@@ -1,6 +1,5 @@
 <?php
 require_once("intern.php");
-require_once("$intern/common.php");
 
 if (empty($directory)) {
     $page['title'] = 'Gallery: ' . htmlspecialchars($directory);
@@ -15,7 +14,7 @@ logToFile("gallery");
 $filelist = list_files();
 ?>
 
-<a href="./">Go to Index</a>
+<a href="<?= content('.','index') ?>">Go to Index</a>
 
 <h1><?= $page['heading'] ?></h1>
 
@@ -24,8 +23,8 @@ foreach ($filelist['image'] as $file) {
     list($w, $h) = array_values(thumb_size($file));
     print '
 <div style="display: inline-block; margin: 4px; border: 1px solid grey; text-align: center; width: '.$w.'px; height: '.$h.'px;">
- <a href="'.htmlspecialchars($file).'/view">
-  <img width="'.$w.'" height="'.$h.'" src="'.htmlspecialchars($file).'/thumb" alt="'.htmlspecialchars($file).'"/>
+ <a href="'.content($file,'view').'">
+  <img width="'.$w.'" height="'.$h.'" src="'.content($file,'thumb').'" alt="'.htmlspecialchars($file).'"/>
  </a>
 </div>';
 }
@@ -44,8 +43,8 @@ foreach ($filelist['folder'] as $file) {
   <div class="size">'.$size.'</div>
   <div class="unit">Items</div>
   <div class="name">
-    <a title="browse folder" href="'.htmlspecialchars($file).'/gallery"><img src="style/folder.png" width="16" height="16"/></a>
-    <a title="browse folder" href="'.htmlspecialchars($file).'/gallery">'.$file.'</a>
+    <a title="browse folder" href="'.content($file,'gallery').'"><img src="'.uri('style/folder.png').'" width="16" height="16"/></a>
+    <a title="browse folder" href="'.content($file,'gallery').'">'.$file.'</a>
   </div>
 </div>'."\n";
 }
@@ -55,7 +54,7 @@ foreach ($filelist['folder'] as $file) {
 
 
 <h1>Upload</h1>
-<form action="upload" method="post" enctype="multipart/form-data">
+<form action="<?= content('.','upload') ?>" method="post" enctype="multipart/form-data">
 <table>
  <tr>
   <td><input type="hidden" name="referer" value="gallery"/>File:</td>
