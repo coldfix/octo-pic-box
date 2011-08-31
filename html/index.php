@@ -14,7 +14,10 @@ logToFile("index /$dirname");
 $filelist = list_files();
 ?>
 
-<a href="<?= content('.','gallery') ?>">Go to Gallery</a>
+<a href="<?= content('.','gallery') ?>">Go to Gallery</a> |
+<a href="<?= content('.','index') ?>">Reload</a>
+
+
 
 <h1><?= $page['heading'] ?></h1>
 
@@ -63,7 +66,10 @@ foreach ($filelist['normal'] as $file) {
 <div class="filelist">
 <?php
 if (!empty($dirname))
-    $filelist['folder'][] = '..';
+    array_unshift($filelist['folder'], '..');
+    // $filelist['folder'][] = '..';
+array_unshift($filelist['folder'], '.');
+
 foreach ($filelist['folder'] as $file) {
     $size = count_items($file);
     print
