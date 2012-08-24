@@ -62,7 +62,7 @@ foreach ($filelist['normal'] as $file) {
 <div class="clear"></div>
 
 
-<h2>Subfolders</h2>
+<h2>Folders</h2>
 <div class="filelist">
 <?php
 if (!empty($dirname))

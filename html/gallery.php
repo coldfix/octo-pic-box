@@ -32,7 +32,7 @@ foreach ($filelist['image'] as $file) {
 ?>
 
 
-<h2>Subfolders</h2>
+<h2>Folders</h2>
 <div class="filelist">
 <?php
 if (!empty($dirname))

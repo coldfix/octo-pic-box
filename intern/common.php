@@ -40,7 +40,7 @@ function logToFile($msg)
     global $root, $intern;
     if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')
         return;
-    $remote_host = isset($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_ADDR'] : "";
+    $remote_host = isset($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : "";
     $date = date("Y/m/d h:i:s", mktime());
     $remote_addr = $_SERVER['REMOTE_ADDR'];
     $logstr = sprintf("[%s] <%s> (%s) %s\n", $date, $remote_addr, $remote_host, $msg);
