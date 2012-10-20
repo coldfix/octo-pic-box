@@ -6,19 +6,35 @@ if (empty($filename))
 
 $serve_thumb = isset($_GET['thumb']) && $_GET['thumb'];
 $serve_inline = isset($_GET['inline']) && $_GET['inline'];
-$serve_action = $serve_thumb ? 'thumb' : ($serve_inline ? 'view' : 'download');
+$serve_highlight = isset($_GET['highlight']) && $_GET['highlight'];
+
+$serve_action = $serve_inline ? 'view' : 'download';
+$serve_action .= $serve_thumb ? '-thumb' : ($serve_highlight ? "-highlight" : "");
 
 $path = $files.$filename;
 $thumb = $thumbs.$filename;
-$send = $serve_thumb ? $thumb : $path;
+$highlight = $highlights.$filename.".html";
 
+if ($serve_highlight && obsolete($highlight, $path)) {
+  if (!create_highlight($path, $highlight)) {
+    $serve_highlight = false;
+  }
+}
+
+$send = $serve_thumb ? $thumb : ($serve_highlight ? $highlight : $path);
+
+if ($serve_highligth) {
+  $filename .= ".html";
+}
 
 if ($serve_thumb && !is_image_file($filename))
     error404();
 logToFile("$serve_action /$filename");
 
-if ($serve_thumb && (!file_exists($thumb) || filemtime($path) > filemtime($thumb)))
+
+if ($serve_thumb && obsolete($thumb, $highlight)) {
     create_thumb($path, $thumb, $thumb_width, $thumb_height);
+}
 
 if (is_dir($path)) {
     system('gzip "' . escapeshellcmd() . '"');

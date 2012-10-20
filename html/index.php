@@ -47,12 +47,17 @@ foreach ($filelist['image'] as $file) {
 <?php
 foreach ($filelist['normal'] as $file) {
     $size = filesize($files.$file);
+    $hl = is_highlightable($file);
     print
 '<div class="file">
   <div class="size">'.get_filesize($size).'</div>
   <div class="unit">'.get_filesize_unit($size).'</div>
   <div class="name">
-    <a title="view file" href="'.content($file,'view').'"><img src="'.uri('style/view.png').'" width="16" height="16"/></a>
+  <a title="view file" href="'.content($file,'view').'"><img src="'.uri('style/view.png').'" width="16" height="16"/></a>';
+    if ($hl)
+      print '
+  <a title="highlight file" href="'.content($file,'view-src').'"><img src="'.uri('style/highlight.png').'" width="16" height="16"/></a>';
+    print '
     <a title="download file" href="'.content($file,'download').'">'.$file.'</a>
   </div>
 </div>'."\n";

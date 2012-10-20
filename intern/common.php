@@ -27,6 +27,7 @@ if ($dirname !== '') {
 if ($dirname !== '') {
     $files .= "$dirname/";
     $thumbs .= "$dirname/";
+    $highlights .= "$dirname/";
 }
 
 
@@ -120,6 +121,11 @@ function get_filesize ($dsize, $unit = "")
         return $dsize;
 }
 
+function obsolete($target, $dep)
+{
+    return !file_exists($target) || filemtime($dep) > filemtime($target);
+}
+
 
 function file_extension($filename)
 {
@@ -152,6 +158,22 @@ function compute_thumb_size($orig_width, $orig_height, $thumb_width, $thumb_heig
     else if ($orig_width / $orig_height < $thumb_width / $thumb_height)
 		$thumb_width = $thumb_height * $orig_width / $orig_height;
     return array('width' => $thumb_width, 'height' => $thumb_height);
+}
+
+function create_highlight($source, $highlight)
+{
+  $ret = 0;
+  system("source-highlight -i " . escapeshellarg($source)
+                         . " -o " . escapeshellarg($highlight)
+                         . " -f html -d -q", $ret);
+  return $ret == 0;
+}
+
+function is_highlightable($file)
+{
+  global $files, $highlights;
+  return file_exists($highlights.$file.".html") ||
+        create_highlight($files.$file, $highlights.$file.".html");
 }
 
 function create_thumb($image, $thumb, $thumb_width, $thumb_height)
