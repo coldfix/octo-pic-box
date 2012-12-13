@@ -33,7 +33,7 @@ foreach ($filelist['image'] as $file) {
 
 
 <h2>Folders</h2>
-<div class="filelist">
+<table class="filelist">
 <?php
 if (!empty($dirname))
     array_unshift($filelist['folder'], '..');
@@ -43,18 +43,19 @@ array_unshift($filelist['folder'], '.');
 foreach ($filelist['folder'] as $file) {
     $size = count_items($file);
     print
-'<div class="file">
-  <div class="size">'.$size.'</div>
-  <div class="unit">Items</div>
-  <div class="name">
-    <a title="browse folder" href="'.content($file,'gallery').'"><img src="'.uri('style/folder.png').'" width="16" height="16"/></a>
+'<tr class="file">
+  <td class="size">'.$size.'</td>
+  <td class="unit">Items</td>
+  <td class="action">
+    <a title="browse folder" href="'.content($file,'gallery').'"><img src="'.uri('style/folder.png').'" width="16" height="16" alt="browse"/></a>
+  </td>
+  <td class="name">
     <a title="browse folder" href="'.content($file,'gallery').'">'.$file.'</a>
-  </div>
-</div>'."\n";
+  </td>
+</tr>'."\n";
 }
 ?>
-</div>
-<div class="clear"></div>
+</table>
 
 
 <h1>Upload</h1>
