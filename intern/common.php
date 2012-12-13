@@ -201,10 +201,10 @@ function create_thumb($image, $thumb, $thumb_width, $thumb_height)
     // save thumbnail into a file
     if (!is_dir(dirname($thumb)))
         mkdir(dirname($thumb));
-	if ($ext == 'png')
-		imagepng($thumb_img, $thumb);
-	else
+  if ($ext == 'jpg' || $ext == 'jpeg')
 		imagejpeg($thumb_img, $thumb);
+  else if ($ext == 'png')
+		imagepng($thumb_img, $thumb);
 
 	imagedestroy($thumb_img);
 	imagedestroy($orig_img);

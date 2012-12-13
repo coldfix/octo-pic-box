@@ -23,7 +23,7 @@ if ($serve_highlight && obsolete($highlight, $path)) {
 
 $send = $serve_thumb ? $thumb : ($serve_highlight ? $highlight : $path);
 
-if ($serve_highligth) {
+if ($serve_highlight) {
   $filename .= ".html";
 }
 
