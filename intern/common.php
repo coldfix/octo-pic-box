@@ -39,10 +39,10 @@ if ($dirname !== '') {
 function logToFile($msg)
 {
     global $root, $intern;
-    if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')
+    if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1')
         return;
     $remote_host = isset($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : "";
-    $date = date("Y/m/d h:i:s", mktime());
+    $date = date("Y/m/d h:i:s", time());
     $remote_addr = $_SERVER['REMOTE_ADDR'];
     $logstr = sprintf("[%s] <%s> (%s) %s\n", $date, $remote_addr, $remote_host, $msg);
     file_put_contents("$intern/access.log", $logstr, FILE_APPEND);
@@ -201,13 +201,19 @@ function create_thumb($image, $thumb, $thumb_width, $thumb_height)
     // save thumbnail into a file
     if (!is_dir(dirname($thumb)))
         mkdir(dirname($thumb));
+
+    $success = false;
   if ($ext == 'jpg' || $ext == 'jpeg')
-		imagejpeg($thumb_img, $thumb);
+		$success = imagejpeg($thumb_img, $thumb);
   else if ($ext == 'png')
-		imagepng($thumb_img, $thumb);
+		$success = imagepng($thumb_img, $thumb);
 
 	imagedestroy($thumb_img);
 	imagedestroy($orig_img);
+
+  if (!$success) {
+    logToFile("Failed to create thumb: $thumb");
+  }
 }
 
 function count_items($folder)
