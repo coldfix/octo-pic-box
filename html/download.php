@@ -16,7 +16,7 @@ $thumb = $thumbs.$filename;
 $highlight = $highlights.$filename.".html";
 
 if ($serve_highlight && obsolete($highlight, $path)) {
-  if (!create_highlight($path, $highlight)) {
+  if (!create_highlight($path, "$dirname/$filename", $highlight)) {
     $serve_highlight = false;
   }
 }

@@ -160,11 +160,12 @@ function compute_thumb_size($orig_width, $orig_height, $thumb_width, $thumb_heig
     return array('width' => $thumb_width, 'height' => $thumb_height);
 }
 
-function create_highlight($source, $highlight)
+function create_highlight($source, $title, $highlight)
 {
   $ret = 0;
   system("source-highlight -i " . escapeshellarg($source)
                          . " -o " . escapeshellarg($highlight)
+                         . " -T " . escapeshellarg($title)
                          . " -f html -d -q", $ret);
   return $ret == 0;
 }
@@ -173,7 +174,7 @@ function is_highlightable($file)
 {
   global $files, $highlights;
   return file_exists($highlights.$file.".html") ||
-        create_highlight($files.$file, $highlights.$file.".html");
+        create_highlight($files.$file, $file, $highlights.$file.".html");
 }
 
 function create_thumb($image, $thumb, $thumb_width, $thumb_height)
