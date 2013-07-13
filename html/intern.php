@@ -1,5 +1,5 @@
 <?php
-$root = '/var/www/root';
+$root = '/var/www/share';
 $intern = "$root/intern";
 $files = "$root/files/";
 $thumbs = "$root/thumbs/";
