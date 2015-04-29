@@ -44,17 +44,22 @@ if (is_dir($path)) {
 $finfo = new FInfo(FILEINFO_MIME)
     or fatal_error("failed $serve_action: ".$filename, "Opening fileinfo database failed");
 
-HttpResponse::setGzip(true);
-HttpResponse::setContentDisposition($filename, $serve_inline);
-// HttpResponse::guessContentType($send); // needs libmagick
-HttpResponse::setContentType($finfo->file($send));
+$file = fopen($send, 'rb');
+$size = filesize($send);
+$type = $serve_inline ? "inline" : "attachment";
+$time = filemtime($send);
+$expire = 3600*24*31;
 
-HttpResponse::setFile($send); // auto calculates ETag and LastModified
-// HttpResponse::setCacheControl('public', 3600*24, false);
-HttpResponse::setCacheControl('public', 3600*24*31, true);
-HttpResponse::setCache(true);
+$resp = new http\Env\Response;
+$body = new http\Message\Body($file);
+$resp->setBody($body);
+$resp->setHeader("Content-Length", $size);
+$resp->setHeader("Last-Modified", date("r", $time));
+$resp->setHeader("Expires", date("r", time()+$expire));
+$resp->setContentDisposition([$type => ["filename" => $filename]]);
+$resp->setContentType($finfo->file($send));
+$resp->setCacheControl("Cache-Control: max-age=$expire");
 
-HttpResponse::setThrottleDelay(0.0);
-HttpResponse::send();
+$resp->send();
 
 ?>
