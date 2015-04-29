@@ -32,7 +32,7 @@ if ($serve_thumb && !is_image_file($filename))
 logToFile("$serve_action /$dirname/$filename");
 
 
-if ($serve_thumb && obsolete($thumb, $highlight)) {
+if ($serve_thumb && obsolete($thumb, $path)) {
     create_thumb($path, $thumb, $thumb_width, $thumb_height);
 }
 
