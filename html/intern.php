@@ -1,5 +1,5 @@
 <?php
-$root = '/var/www/share';
+$root = dirname(dirname(realpath(__FILE__)));
 $intern = "$root/intern";
 $files = "$root/files/";
 $thumbs = "$root/thumbs/";

@@ -252,7 +252,15 @@ function list_files()
 function uri($relative)
 {
     global $base_address;
-    return htmlspecialchars($base_address.'/'.$relative);
+    if ($base_address == '/') {
+        // Never start with "//"! An URI starting with "//" points to a
+        // different server using the same protocol, not a different resource
+        // on the same server!
+        return htmlspecialchars('/'.$relative);
+    }
+    else {
+        return htmlspecialchars($base_address.'/'.$relative);
+    }
 }
 
 function content($file, $action)
