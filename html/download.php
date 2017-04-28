@@ -29,7 +29,6 @@ if ($serve_highlight) {
 
 if ($serve_thumb && !is_image_file($filename))
     error404();
-logToFile("$serve_action /$dirname/$filename");
 
 
 if ($serve_thumb && obsolete($thumb, $path)) {

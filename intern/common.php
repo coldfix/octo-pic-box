@@ -36,21 +36,8 @@ if ($dirname !== '') {
 // logging
 //--------------------------------------------------
 
-function logToFile($msg)
-{
-    global $root, $intern;
-    if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1')
-        return;
-    $remote_host = isset($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : "";
-    $date = date("Y/m/d h:i:s", time());
-    $remote_addr = $_SERVER['REMOTE_ADDR'];
-    $logstr = sprintf("[%s] <%s> (%s) %s\n", $date, $remote_addr, $remote_host, $msg);
-    file_put_contents("$intern/access.log", $logstr, FILE_APPEND);
-}
-
 function fatal_error($log, $user)
 {
-    logToFile($log);
     die ($user);
 }
 
@@ -211,10 +198,6 @@ function create_thumb($image, $thumb, $thumb_width, $thumb_height)
 
 	imagedestroy($thumb_img);
 	imagedestroy($orig_img);
-
-  if (!$success) {
-    logToFile("Failed to create thumb: $thumb");
-  }
 }
 
 function count_items($folder)

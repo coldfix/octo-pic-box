@@ -10,7 +10,6 @@ if (empty($dirname)) {
 }
 require("$intern/header.php");
 
-logToFile("index /$dirname");
 $filelist = list_files();
 ?>
 

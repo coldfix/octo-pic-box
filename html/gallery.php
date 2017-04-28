@@ -10,7 +10,6 @@ if (empty($dirname)) {
 }
 require("$intern/header.php");
 
-logToFile("gallery /$dirname");
 $filelist = list_files();
 ?>
 

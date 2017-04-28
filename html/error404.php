@@ -9,7 +9,6 @@ $page['title'] = '404 Not Found';
 $page['css'] = array();
 require("$intern/header.php");
 
-logToFile('404 '.$_SERVER['REQUEST_URI']);
 ?>
 
 <h1>404 Not Found</h1>
