@@ -188,6 +188,7 @@ function create_thumb($image, $thumb, $thumb_width, $thumb_height)
 
     // save thumbnail into a file
     if (!is_dir(dirname($thumb)))
+        // NOTE: the call `mkdir('/something/thumbs/.')` is broken
         mkdir(dirname($thumb));
 
     $success = false;
