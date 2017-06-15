@@ -56,6 +56,9 @@ foreach ($filelist['folder'] as $file) {
 ?>
 </table>
 
+<?php
+if (is_writeable(rtrim($files,'/'))) {
+?>
 
 <h1>Upload</h1>
 <form action="<?= content('.','upload') ?>" method="post" enctype="multipart/form-data">
@@ -69,5 +72,18 @@ foreach ($filelist['folder'] as $file) {
 </form>
 
 <?php
+}
+else
+{
+?>
+
+<div class="gray">
+<h1>Upload</h1>
+Write protected directory.
+</div>
+
+<?php
+}
+
 require("$intern/footer.php");
 ?>
