@@ -150,6 +150,8 @@ function compute_thumb_size($orig_width, $orig_height, $thumb_width, $thumb_heig
 function create_highlight($source, $title, $highlight)
 {
   $ret = 0;
+  if (!is_dir(dirname($highlight)))
+    mkdir(dirname($highlight), 0777, true);
   system("source-highlight -i " . escapeshellarg($source)
                          . " -o " . escapeshellarg($highlight)
                          . " -T " . escapeshellarg($title)

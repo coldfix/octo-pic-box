@@ -4,7 +4,7 @@ COPY . /picbox
 WORKDIR /picbox
 
 # php5-gd for imagecreatefromXXX
-ARG runtime_deps="apache2 libapache2-mod-php5 php5 php5-cgi php5-gd php5-pecl-http imagemagick"
+ARG runtime_deps="apache2 libapache2-mod-php5 php5 php5-cgi php5-gd php5-pecl-http imagemagick source-highlight"
 ARG build_deps="wget php5-dev"
 
 RUN apt-get update && \
