@@ -16,7 +16,9 @@ RUN apt-get update && \
     cd /etc/php5/apache2/conf.d && \
     ln -s ../../mods-available/raphf.ini     40-raphf.ini && \
     ln -s ../../mods-available/propro.ini    45-propro.ini && \
-    ln -s ../../mods-available/pecl-http.ini 50-pecl-http.ini
+    ln -s ../../mods-available/pecl-http.ini 50-pecl-http.ini && \
+    cd /etc/apache2/mods-enabled && \
+    ln -s ../mods-available/auth_digest.load
 
 
 VOLUME /picbox/files

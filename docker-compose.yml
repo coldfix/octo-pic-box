@@ -1,0 +1,13 @@
+version: "3"
+services:
+
+  picbox:
+    build: .
+    restart: always
+    volumes:
+      - .:/picbox
+      - ./files:/picbox/files
+    ports:
+      - "6060:80"
+    environment:
+      - HTTP_AUTH=digest
