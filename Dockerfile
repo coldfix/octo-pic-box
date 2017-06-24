@@ -7,6 +7,8 @@ WORKDIR /picbox
 ARG runtime_deps="apache2 libapache2-mod-php5 php5 php5-cgi php5-gd php5-pecl-http imagemagick source-highlight"
 ARG build_deps="wget php5-dev"
 
+ENV HTTP_AUTH=none
+
 RUN apt-get update && \
     apt-get install -y $build_deps $runtime_deps && \
     wget https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64.deb && \

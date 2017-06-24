@@ -14,5 +14,3 @@ chown -R www-data:www-data /picbox/thumbs
 chown -R www-data:www-data /picbox/highlights
 
 exec apachectl -e info -DFOREGROUND
-
-

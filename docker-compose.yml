@@ -10,4 +10,4 @@ services:
     ports:
       - "6060:80"
     environment:
-      - HTTP_AUTH=digest
+      - HTTP_AUTH=none
