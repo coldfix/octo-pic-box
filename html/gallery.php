@@ -24,7 +24,7 @@ foreach ($filelist['image'] as $file) {
     print '
 <div class="imagebox" style="width: '.$w.'px; height: '.$h.'px;">
  <a href="'.content($file,'view').'">
-  <img width="'.$w.'" height="'.$h.'" src="'.content($file,'thumb').'" alt="'.htmlspecialchars($file).'"/>
+  <img width="'.$w.'" height="'.$h.'" src="'.content($file,'thumb').'" alt="'.htmlspecialchars($file).'" title="'.htmlspecialchars($file).'"/>
  </a>
 </div>';
 }
